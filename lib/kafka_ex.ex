@@ -178,6 +178,7 @@ defmodule KafkaEx do
     min_bytes         = Keyword.get(opts, :min_bytes, @min_bytes)
     max_bytes         = Keyword.get(opts, :max_bytes, @max_bytes)
     auto_commit       = Keyword.get(opts, :auto_commit, true)
+    timeout           = Keyword.get(opts, :timeout, 10_000)
 
     retrieved_offset = current_offset(supplied_offset, partition, topic, worker_name)
 
@@ -188,7 +189,7 @@ defmodule KafkaEx do
         offset: retrieved_offset, wait_time: wait_time,
         min_bytes: min_bytes, max_bytes: max_bytes
       }
-    })
+    }, timeout)
   end
 
   @spec offset_commit(atom, OffsetCommitRequest.t) :: OffsetCommitResponse.t
